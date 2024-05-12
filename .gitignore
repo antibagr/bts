@@ -1,5 +1,6 @@
 .idea/
-
+.ruff_cache
+.env
 # pyenv
 .python-version
 

@@ -1,8 +1,28 @@
-version: "3.9"
-
 services:
+  postgres:
+    container_name: ${COMPOSE_PROJECT_NAME}_postgres
+    image: postgres:16.2
+    env_file:
+      - ../.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
   web:
-    container_name: web
+    container_name: ${COMPOSE_PROJECT_NAME}_web
     build:
-      context: ../
-      dockerfile: deploy/web/Dockerfile.win
+      context: ..
+      dockerfile: ./deployment/Dockerfile
+    env_file:
+      - ../.env
+    environment:
+      - POSTGRES_HOST=postgres
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+
+volumes:
+  postgres_data:
