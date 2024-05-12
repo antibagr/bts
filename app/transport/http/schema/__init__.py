@@ -1,3 +1,3 @@
-from . import bets, error
+from . import bets, error, events
 
-__all__ = ["bets", "error"]
+__all__ = ["bets", "error", "events"]

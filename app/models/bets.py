@@ -16,7 +16,7 @@ class Bets(Base, table=True):
     """Represent a bet made by a user."""
 
     __tablename__ = "bets"
-    __table_args__ = (sqlmodel.Index("ix_bets_user_id_event_id", "user_id", "event_id", unique=True),)
+    __table_args__ = (sqlmodel.Index("ix_bets_user_id_event_id", "user_id", "event_id", unique=False),)
 
     event_id: uuid.UUID = sqlmodel.Field(index=True)
     user_id: uuid.UUID = sqlmodel.Field(foreign_key="users.id", index=True)
@@ -32,7 +32,7 @@ class Bets(Base, table=True):
 
     status: enums.BetStatus = sqlmodel.Field(
         sa_column=sqlmodel.Column(
-            sqlmodel.Enum(enums.BetStatus),
+            sqlmodel.Enum(enums.BetStatus, name="enum_bet_status"),
             nullable=False,
             default=enums.BetStatus.PENDING,
             comment="Status of the bet",

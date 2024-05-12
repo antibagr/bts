@@ -46,9 +46,9 @@ async def test_make_bet_no_more_than_two_decimal_places(
 
 async def test_make_bet_superuser(
     app: fastapi.FastAPI,
-    superuser_client: httpx.AsyncClient,
+    superuser_auth_client: httpx.AsyncClient,
 ) -> None:
-    resp = await superuser_client.post(
+    resp = await superuser_auth_client.post(
         app.url_path_for(bets.make_bet.__name__),
         json={
             "event_id": str(uuid.uuid4()),

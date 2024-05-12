@@ -11,6 +11,7 @@ import typing
 import uuid
 
 from app import models
+from app.dto import enums
 from app.dto.entities.base import BaseModel
 
 
@@ -21,3 +22,11 @@ class MakeBet(BaseModel):
     user: models.User
     event_id: uuid.UUID
     amount: decimal.Decimal
+
+
+@typing.final
+class UpdateEvent(BaseModel):
+    """Command emitted when we need to update an event."""
+
+    event_id: uuid.UUID
+    status: enums.EventStatus

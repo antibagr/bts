@@ -8,6 +8,7 @@ import sqlalchemy.ext.asyncio
 from app import models
 from app.repository.db import DatabaseSessionManager, DB
 from app.services.bets import BetsService
+from app.services.events import EventsService
 from app.services.liveness_probe import LivenessProbeSrv
 from app.settings import Settings
 from app.settings import settings as global_settings
@@ -52,8 +53,18 @@ def bets_service(
     return BetsService(bets_storage=db)
 
 
-def liveness_resources() -> dict[str, typing.Any]:
-    return {}
+def events_service(
+    db: typing.Annotated[DB, fastapi.Depends(db)],
+) -> EventsService:
+    return EventsService(events_storage=db)
+
+
+def liveness_resources(
+    db: typing.Annotated[DB, fastapi.Depends(db)],
+) -> dict[str, typing.Any]:
+    return {
+        "db": db,
+    }
 
 
 def liveness_probe_service(

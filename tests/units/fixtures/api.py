@@ -52,7 +52,7 @@ async def auth_client(
 
 
 @pytest.fixture()
-async def superuser_client(
+async def superuser_auth_client(
     app: fastapi.FastAPI,
     client: httpx.AsyncClient,
     superuser: models.User,

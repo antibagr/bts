@@ -81,7 +81,7 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
         schema="bts",
     )
-    op.create_index("ix_bets_user_id_event_id", "bets", ["user_id", "event_id"], unique=True, schema="bts")
+    op.create_index("ix_bets_user_id_event_id", "bets", ["user_id", "event_id"], unique=False, schema="bts")
     op.create_index(op.f("ix_bts_bets_event_id"), "bets", ["event_id"], unique=False, schema="bts")
     op.create_index(op.f("ix_bts_bets_id"), "bets", ["id"], unique=True, schema="bts")
     op.create_index(op.f("ix_bts_bets_user_id"), "bets", ["user_id"], unique=False, schema="bts")

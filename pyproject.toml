@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "app"
 version = "1.0.0"
-description = "bet-maker"
+description = "BTS - Betting Software Bet-Maker"
 authors = ["Anthony Bagrianov <rudiemeant@gmail.com>"]
 maintainers = ["Anthony Bagrianov <rudiemeant@gmail.com>"]
 

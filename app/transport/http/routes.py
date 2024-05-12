@@ -22,3 +22,7 @@ def register_http_routes(app: FastAPI) -> None:
         router=public.bets.router,
         prefix=API_PREFIX,
     )
+    app.include_router(
+        router=public.events.router,
+        prefix=API_PREFIX,
+    )

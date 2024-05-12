@@ -46,10 +46,10 @@ class BetsDB(BaseDB):
         bet.status = status
         return await self.update(bet)
 
-    async def update_bets_status(
+    async def update_event(
         self,
         event_id: uuid.UUID,
-        status: enums.BetStatus,
+        status: enums.EventStatus,
     ) -> None:
         """Update the status of all bets of an event."""
         await self.session.execute(

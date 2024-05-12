@@ -7,15 +7,17 @@ import typing
 @typing.final
 @enum.unique
 class BetStatus(enum.StrEnum):
-    """Represent the status of a betyping."""
+    """Represent the status of a bet."""
 
     PENDING = "pending"
     WON = "won"
     LOST = "lost"
 
     def is_final(self) -> bool:
-        """Check if the status is final."""
         return self in {BetStatus.WON, BetStatus.LOST}
+
+
+EventStatus = BetStatus
 
 
 @typing.final
