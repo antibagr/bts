@@ -44,6 +44,24 @@ async def test_make_bet_no_more_than_two_decimal_places(
     }
 
 
+async def test_make_bet_superuser(
+    app: fastapi.FastAPI,
+    superuser_client: httpx.AsyncClient,
+) -> None:
+    resp = await superuser_client.post(
+        app.url_path_for(bets.make_bet.__name__),
+        json={
+            "event_id": str(uuid.uuid4()),
+            "amount": 100.12,
+        },
+    )
+    assert resp.status_code == fastapi.status.HTTP_403_FORBIDDEN
+    assert resp.json() == {
+        "detail": "Superusers are not allowed to make bets.",
+        "code": "permission_scope_error",
+    }
+
+
 async def test_make_bet(
     app: fastapi.FastAPI,
     auth_client: httpx.AsyncClient,
@@ -75,4 +93,45 @@ async def test_make_bet(
         "status": "pending",
         "value": "1",
         "type": "result",
+    }
+
+
+async def test_get_bets_empty(
+    app: fastapi.FastAPI,
+    auth_client: httpx.AsyncClient,
+) -> None:
+    resp = await auth_client.get(app.url_path_for(bets.get_bets.__name__))
+    assert resp.status_code == fastapi.status.HTTP_200_OK
+    assert resp.json() == {"items": [], "total": 0}
+
+
+async def test_get_bets(
+    app: fastapi.FastAPI,
+    auth_client: httpx.AsyncClient,
+    db: DB,
+    user: models.User,
+) -> None:
+    event_id_1 = str(uuid.uuid4())
+    event_id_2 = str(uuid.uuid4())
+    for event_id in (event_id_1, event_id_2):
+        resp = await auth_client.post(
+            app.url_path_for(bets.make_bet.__name__),
+            json={
+                "event_id": event_id,
+                "amount": 100.12,
+            },
+        )
+        assert resp.status_code == fastapi.status.HTTP_201_CREATED
+
+    resp = await auth_client.get(app.url_path_for(bets.get_bets.__name__))
+    assert resp.status_code == fastapi.status.HTTP_200_OK
+
+    _bets = await db.get_user_bets(user=user)
+
+    assert resp.json() == {
+        "items": [
+            {"id": str(_bets[0].id), "status": "pending"},
+            {"id": str(_bets[1].id), "status": "pending"},
+        ],
+        "total": 2,
     }

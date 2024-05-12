@@ -127,3 +127,13 @@ async def user(
             is_superuser=False,
         )
     )
+
+
+@pytest.fixture()
+async def superuser(db: DB) -> models.User:
+    return await db.create(
+        models.User(
+            email="admin@mail.com",
+            is_superuser=True,
+        )
+    )

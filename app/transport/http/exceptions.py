@@ -10,6 +10,7 @@ from app.dto.exceptions import (
     ClientError,
     ErrorProtocol,
     NotFoundError,
+    PermissionScopeError,
 )
 
 
@@ -60,6 +61,7 @@ ERROR_MAP: typing.Mapping[type[ErrorProtocol], int] = {
     AlreadyExistsError: fastapi.status.HTTP_409_CONFLICT,
     ClientError: fastapi.status.HTTP_400_BAD_REQUEST,
     AuthenticationError: fastapi.status.HTTP_401_UNAUTHORIZED,
+    PermissionScopeError: fastapi.status.HTTP_403_FORBIDDEN,
 }
 
 

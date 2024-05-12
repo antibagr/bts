@@ -25,7 +25,7 @@ class MakeBetRequest(APISchemeBaseModel):
 
 
 @typing.final
-class Bet(APISchemeBaseModel):
+class MakeBetResponse(APISchemeBaseModel):
     id: uuid.UUID
     event_id: uuid.UUID
     amount: decimal.Decimal
@@ -41,3 +41,9 @@ class Bet(APISchemeBaseModel):
             serialization_alias="type",
         ),
     ]
+
+
+@typing.final
+class Bet(APISchemeBaseModel):
+    id: uuid.UUID
+    status: enums.BetStatus

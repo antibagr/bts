@@ -51,6 +51,20 @@ async def auth_client(
     app.dependency_overrides.clear()
 
 
+@pytest.fixture()
+async def superuser_client(
+    app: fastapi.FastAPI,
+    client: httpx.AsyncClient,
+    superuser: models.User,
+) -> typing.AsyncGenerator[httpx.AsyncClient, None]:
+    async def _get_user() -> models.User:
+        return superuser
+
+    app.dependency_overrides[dependencies.get_current_user] = _get_user
+    yield client
+    app.dependency_overrides.clear()
+
+
 @pytest.fixture(autouse=True)
 def mock_api_response() -> typing.Generator[aioresponses.aioresponses, None, None]:
     with aioresponses.aioresponses() as m:

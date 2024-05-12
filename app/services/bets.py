@@ -4,7 +4,7 @@ import attrs
 
 from app import models
 from app.dto import commands
-from app.dto.exceptions import ClientError, PermissionScopeError
+from app.dto.exceptions import PermissionScopeError
 from app.repository.db import DB
 
 
@@ -20,10 +20,15 @@ class BetsService:
     ) -> models.Bets:
         if command.user.is_superuser:
             raise PermissionScopeError("Superusers are not allowed to make bets.")
-        if command.amount < 0:
-            raise ClientError("Amount must be a positive number.")
         return await self._bets_storage.create_bet(
             user=command.user,
             event_id=command.event_id,
             amount=command.amount,
         )
+
+    async def get_user_bets(
+        self,
+        *,
+        user: models.User,
+    ) -> list[models.Bets]:
+        return await self._bets_storage.get_user_bets(user=user)
