@@ -39,7 +39,6 @@ python-jose = { extras = ["cryptography"], version = "3.3.0" }
 temporalio = "1.5.1"
 ujson = "5.9.0"
 msgpack = "1.0.8"
-python-decouple = "3.8"
 python-multipart = "^0.0.9"
 
 [tool.poetry.group.dev.dependencies]
