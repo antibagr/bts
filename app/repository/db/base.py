@@ -190,7 +190,11 @@ class EntityDB:
             self.session.add(model)
             await self.session.commit()
         except sqlalchemy.exc.IntegrityError as exc:
-            raise AlreadyExistsError(f"Entity {model.__class__.__name__} with id {model.id} already exists") from exc
+            if "duplicate key value violates unique constraint" in str(exc):
+                raise AlreadyExistsError(
+                    f"Entity {model.__class__.__name__} with id {model.id} already exists"
+                ) from exc
+            raise
         await self.session.refresh(model)
         return model
 

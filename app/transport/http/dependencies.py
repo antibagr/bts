@@ -73,9 +73,13 @@ def liveness_probe_service(
     return LivenessProbeSrv(resources=liveness_resources)
 
 
-def get_current_user() -> models.User:
-    return models.User(
+async def get_current_user(
+    db: typing.Annotated[DB, fastapi.Depends(db)],
+) -> models.User:
+    user, _is_created = await db.get_or_create(
+        models.User,
         id=uuid.UUID("00000000-0000-0000-0000-000000000000"),
         email="test@mail.com",
         is_superuser=False,
     )
+    return user

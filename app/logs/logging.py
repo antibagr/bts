@@ -77,7 +77,7 @@ def setup_logging() -> None:
         handlers=[
             {
                 "sink": sys.stdout,
-                "serialize": False,
+                "serialize": True,
                 "backtrace": settings.DEBUG,
                 "diagnose": settings.DEBUG,
                 "level": settings.LOGGING_LEVEL,
