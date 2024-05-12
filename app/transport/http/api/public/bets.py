@@ -14,6 +14,7 @@ router = fastapi.APIRouter(tags=["bets"])
     path="/v1/bets",
     summary="Request a new bank transfer",
     responses=schema.error.Responses,
+    status_code=fastapi.status.HTTP_201_CREATED,
 )
 async def make_bet(
     req: schema.bets.MakeBetRequest,

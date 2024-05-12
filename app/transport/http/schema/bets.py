@@ -17,7 +17,6 @@ class MakeBetRequest(APISchemeBaseModel):
             ge=0,
             max_digits=10,
             decimal_places=2,
-            strict=True,
             allow_inf_nan=False,
         ),
     ]

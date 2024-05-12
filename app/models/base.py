@@ -59,5 +59,5 @@ class Base(sqlmodel.SQLModel, table=False):
     )
     updated_at: ArrowType = sqlmodel.Field(
         default_factory=arrow.utcnow,
-        sa_column_kwargs={"server_default": now_at_utc, "onupdate": now_at_utc},
+        sa_column_kwargs={"server_default": now_at_utc, "server_onupdate": now_at_utc},
     )

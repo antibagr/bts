@@ -7,6 +7,7 @@ import sqlalchemy.exc
 import sqlalchemy.ext.asyncio
 import sqlalchemy_utils
 
+from app import models
 from app.models import *  # noqa: F403
 from app.models import METADATA
 from app.repository.db import DatabaseSessionManager, DB
@@ -112,3 +113,17 @@ async def db(db_session: sqlalchemy.ext.asyncio.AsyncSession) -> DB:
 @pytest.fixture()
 async def test_user_id() -> uuid.UUID:
     return uuid.UUID("00000000-0000-0000-0000-000000000001")
+
+
+@pytest.fixture()
+async def user(
+    db: DB,
+    test_user_id: uuid.UUID,
+) -> models.User:
+    return await db.create(
+        models.User(
+            id=test_user_id,
+            email="test@mail.com",
+            is_superuser=False,
+        )
+    )

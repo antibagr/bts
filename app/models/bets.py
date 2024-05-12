@@ -16,16 +16,18 @@ class Bets(Base, table=True):
     """Represent a bet made by a user."""
 
     __tablename__ = "bets"
+    __table_args__ = (sqlmodel.Index("ix_bets_user_id_event_id", "user_id", "event_id", unique=True),)
 
-    event_id: uuid.UUID = sqlmodel.Field(primary_key=True, index=True)
-    user_id: uuid.UUID = sqlmodel.Field(foreign_key="users.id", primary_key=True, index=True)
+    event_id: uuid.UUID = sqlmodel.Field(index=True)
+    user_id: uuid.UUID = sqlmodel.Field(foreign_key="users.id", index=True)
 
     amount: decimal.Decimal = sqlmodel.Field(
         sa_column=sqlmodel.Column(
-            sqlmodel.Numeric,
+            sqlmodel.Numeric(),
             nullable=False,
             comment="Amount of the bet",
         ),
+        gt=0,
     )
 
     status: enums.BetStatus = sqlmodel.Field(
